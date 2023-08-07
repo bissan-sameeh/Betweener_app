@@ -4,7 +4,8 @@ import 'package:flutter/material.dart';
 const baseUrl = 'https://www.osamapro.online/api';
 const loginUrl = '$baseUrl/login';
 const linksUrl = '$baseUrl/links';
-
+const searchUrl = '$baseUrl/search';
+const followUrl = '$baseUrl/follow';
 // ============= STYLE CONSTS ==============
 
 const kScaffoldColor = Color(0xffFDFDFD);

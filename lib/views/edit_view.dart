@@ -38,7 +38,6 @@ class _EditeViewState extends State<EditeView> {
     super.dispose();
   }
 
-  getLinkData() {}
   editLinkUser() {
     if (_formKey.currentState!.validate()) {
       final body = {

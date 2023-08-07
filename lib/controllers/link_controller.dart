@@ -22,7 +22,7 @@ Future<List<Link>> getLinks(context) async {
 
   /// when required to add new link must authorized previously so we use header
 
-  print(jsonDecode(response.body)['links']);
+  // print(jsonDecode(response.body)['links']);
 
   if (response.statusCode == 200) {
     final data = jsonDecode(response.body)['links'] as List<dynamic>;

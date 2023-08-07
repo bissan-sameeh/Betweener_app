@@ -4,6 +4,7 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:tt9_betweener_challenge/controllers/link_controller.dart';
 import 'package:tt9_betweener_challenge/models/link.dart';
 import 'package:tt9_betweener_challenge/views/add_link_view.dart';
+import 'package:tt9_betweener_challenge/views/follower_view.dart';
 
 import '../constants.dart';
 import '../controllers/delete_link_controller.dart';
@@ -93,7 +94,11 @@ class _ProfileViewState extends State<ProfileView> {
                     ),
                     Row(
                       children: [
-                        buildContainer(text: "follower 203"),
+                        buildContainer(
+                            text: "follower 203",
+                            function: () {
+                              Navigator.pushNamed(context, FollowersView.id);
+                            }),
                         SizedBox(
                           width: 8.w,
                         ),
@@ -121,7 +126,8 @@ class _ProfileViewState extends State<ProfileView> {
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return const Center(child: CircularProgressIndicator());
               }
-              return Expanded(
+              return SizedBox(
+                height: 300.h,
                 child: ListView.builder(
                     itemCount: snapshot.data?.length,
                     itemBuilder: (context, index) {
@@ -129,6 +135,9 @@ class _ProfileViewState extends State<ProfileView> {
                         endActionPane: ActionPane(
                           motion: const ScrollMotion(),
                           children: [
+                            SizedBox(
+                              width: 8.w,
+                            ),
                             buildSlidableAction(
                                 icon: Icons.delete,
                                 color: kSecondaryColor,
@@ -148,6 +157,9 @@ class _ProfileViewState extends State<ProfileView> {
                                     }
                                   });
                                 }),
+                            SizedBox(
+                              width: 8.w,
+                            ),
                             buildSlidableAction(
                                 icon: Icons.edit,
                                 color: kDangerColor,
@@ -173,12 +185,18 @@ class _ProfileViewState extends State<ProfileView> {
                           margin: const EdgeInsets.only(bottom: 24),
                           padding: const EdgeInsets.all(12),
                           decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(8),
-                              color: const Color(0xffFEE2E7)),
+                            borderRadius: BorderRadius.circular(8),
+                            color: index % 2 == 0
+                                ? const Color(0xffFEE2E7)
+                                : const Color(0xffE7E5F1),
+                          ),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(snapshot.data![index].title!),
+                              Text(
+                                snapshot.data![index].title!,
+                                style: TextStyle(letterSpacing: 3),
+                              ),
                               Text(snapshot.data![index].link!),
                             ],
                           ),
@@ -232,14 +250,17 @@ class _ProfileViewState extends State<ProfileView> {
     );
   }
 
-  Container buildContainer({required String text}) {
-    return Container(
-      alignment: Alignment.center,
-      padding: const EdgeInsets.all(4),
-      decoration: BoxDecoration(
-          color: const Color(0xffFFD465),
-          borderRadius: BorderRadius.circular(8.r)),
-      child: Text(text),
+  InkWell buildContainer({required String text, Function()? function}) {
+    return InkWell(
+      onTap: function,
+      child: Container(
+        alignment: Alignment.center,
+        padding: const EdgeInsets.all(4),
+        decoration: BoxDecoration(
+            color: const Color(0xffFFD465),
+            borderRadius: BorderRadius.circular(8.r)),
+        child: Text(text),
+      ),
     );
   }
 }

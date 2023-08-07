@@ -5,22 +5,24 @@ import 'package:flutter/services.dart';
 class MyTextField extends StatefulWidget {
   final TextEditingController controller;
   final String hint;
-  final IconData prefix;
+  final IconData? prefix;
+  final IconData suffix;
   final bool password;
   final TextInputType textInputType;
   final TextInputAction textInputAction;
   final bool allowLatters;
-  final Function(String)? onsubmitted;
+  final Function? onPressed;
   const MyTextField(
       {Key? key,
       required this.controller,
       required this.hint,
-      required this.prefix,
+      this.prefix,
       this.password = false,
       this.textInputType = TextInputType.text,
       this.textInputAction = TextInputAction.next,
       this.allowLatters = true,
-      this.onsubmitted})
+      this.onPressed,
+      required this.suffix})
       : super(key: key);
 
   @override
@@ -39,13 +41,14 @@ class _MyTextFieldState extends State<MyTextField> {
       // widget.allowLatters
       //     ? []
       //     : [FilteringTextInputFormatter.allow(RegExp('[0-9.]+'))],
-      onSubmitted: widget.onsubmitted,
+      // onSubmitted: widget.onsubmitted,
       textInputAction: widget.textInputAction,
       obscureText: widget.password ? !obscure : obscure,
       /*default is true the text in these case is hidden */
       decoration: InputDecoration(
         // prefix: Icon(Icons.email),
-        prefixIcon: IconData == null ? SizedBox.shrink() : Icon(widget.prefix),
+
+        prefixIcon: IconData == null ? null : Icon(widget.prefix),
         suffixIcon: widget.password ==
                 true /*to determine if there is password icon or null */
             ? InkWell(
@@ -55,10 +58,11 @@ class _MyTextFieldState extends State<MyTextField> {
                   });
                 },
                 child: Icon(obscure ? Icons.visibility : Icons.visibility_off))
-            : null,
+            : Icon(widget.suffix, size: 30),
+
         /*suffix take nullable value*/
         // label: Text("Email"),
-        contentPadding: EdgeInsets.zero,
+        // contentPadding: EdgeInsets.zero,
         hintText: widget.hint,
 
         // hintStyle: const TextStyle(fontSize: 14, color: Colors.grey),
@@ -75,10 +79,10 @@ class _MyTextFieldState extends State<MyTextField> {
       // obscureText: true,
       cursorColor: Colors.blue,
       cursorHeight: 30,
-      onChanged: (String value) {
-        // print(value);
-        setState(() {});
+      onSubmitted: (_) {
+        widget.onPressed;
       },
+
       style: const TextStyle(color: Colors.blue),
     );
   }
