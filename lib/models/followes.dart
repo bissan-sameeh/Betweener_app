@@ -11,8 +11,8 @@ String followersToJson(Followers data) => json.encode(data.toJson());
 class Followers {
   int? followingCount;
   int? followersCount;
-  List<dynamic>? following;
-  List<Follower>? followers;
+  List<Follow>? following;
+  List<Follow>? followers;
 
   Followers({
     this.followingCount,
@@ -26,11 +26,12 @@ class Followers {
         followersCount: json["followers_count"],
         following: json["following"] == null
             ? []
-            : List<dynamic>.from(json["following"]!.map((x) => x)),
+            : List<Follow>.from(
+                json["following"]!.map((x) => Follow.fromJson(x))),
         followers: json["followers"] == null
             ? []
-            : List<Follower>.from(
-                json["followers"]!.map((x) => Follower.fromJson(x))),
+            : List<Follow>.from(
+                json["followers"]!.map((x) => Follow.fromJson(x))),
       );
 
   Map<String, dynamic> toJson() => {
@@ -38,14 +39,14 @@ class Followers {
         "followers_count": followersCount,
         "following": following == null
             ? []
-            : List<dynamic>.from(following!.map((x) => x)),
+            : List<dynamic>.from(following!.map((x) => x.toJson())),
         "followers": followers == null
             ? []
             : List<dynamic>.from(followers!.map((x) => x.toJson())),
       };
 }
 
-class Follower {
+class Follow {
   int? id;
   String? name;
   String? email;
@@ -55,12 +56,11 @@ class Follower {
   int? isActive;
   dynamic country;
   dynamic ip;
-  dynamic long;
-  dynamic lat;
-  List<Link>? linksSec;
-  List<Link>? links;
+  double? long;
+  double? lat;
+  List<LinkSec>? linkSec;
 
-  Follower({
+  Follow({
     this.id,
     this.name,
     this.email,
@@ -72,11 +72,10 @@ class Follower {
     this.ip,
     this.long,
     this.lat,
-    this.linksSec,
-    this.links,
+    this.linkSec,
   });
 
-  factory Follower.fromJson(Map<String, dynamic> json) => Follower(
+  factory Follow.fromJson(Map<String, dynamic> json) => Follow(
         id: json["id"],
         name: json["name"],
         email: json["email"],
@@ -86,14 +85,12 @@ class Follower {
         isActive: json["isActive"],
         country: json["country"],
         ip: json["ip"],
-        long: json["long"],
-        lat: json["lat"],
-        linksSec: json["linksSec"] == null
+        long: json["long"]?.toDouble(),
+        lat: json["lat"]?.toDouble(),
+        linkSec: json["links"] == null
             ? []
-            : List<Link>.from(json["linksSec"]!.map((x) => Link.fromJson(x))),
-        links: json["links"] == null
-            ? []
-            : List<Link>.from(json["links"]!.map((x) => Link.fromJson(x))),
+            : List<LinkSec>.from(
+                json["links"]!.map((x) => LinkSec.fromJson(x))),
       );
 
   Map<String, dynamic> toJson() => {
@@ -108,16 +105,13 @@ class Follower {
         "ip": ip,
         "long": long,
         "lat": lat,
-        "linksSec": linksSec == null
+        "links": linkSec == null
             ? []
-            : List<dynamic>.from(linksSec!.map((x) => x.toJson())),
-        "links": links == null
-            ? []
-            : List<dynamic>.from(links!.map((x) => x.toJson())),
+            : List<dynamic>.from(linkSec!.map((x) => x.toJson())),
       };
 }
 
-class Link {
+class LinkSec {
   int? id;
   String? title;
   String? link;
@@ -127,7 +121,7 @@ class Link {
   String? createdAt;
   String? updatedAt;
 
-  Link({
+  LinkSec({
     this.id,
     this.title,
     this.link,
@@ -138,7 +132,7 @@ class Link {
     this.updatedAt,
   });
 
-  factory Link.fromJson(Map<String, dynamic> json) => Link(
+  factory LinkSec.fromJson(Map<String, dynamic> json) => LinkSec(
         id: json["id"],
         title: json["title"],
         link: json["link"],

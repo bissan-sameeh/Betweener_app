@@ -4,6 +4,7 @@ import 'package:tt9_betweener_challenge/models/followes.dart';
 import 'package:tt9_betweener_challenge/views/add_link_view.dart';
 import 'package:tt9_betweener_challenge/views/edit_view.dart';
 import 'package:tt9_betweener_challenge/views/follower_view.dart';
+import 'package:tt9_betweener_challenge/views/friend_profile.dart';
 import 'package:tt9_betweener_challenge/views/home_view.dart';
 import 'package:tt9_betweener_challenge/views/loading_view.dart';
 import 'package:tt9_betweener_challenge/views/login_view.dart';
@@ -54,6 +55,7 @@ class MyApp extends StatelessWidget {
               EditeView.id: (context) => const EditeView(),
               SearchView.id: (context) => const SearchView(),
               FollowersView.id: (context) => const FollowersView(),
+              FriendProfile.id: (context) => const FriendProfile(),
             },
           );
         });

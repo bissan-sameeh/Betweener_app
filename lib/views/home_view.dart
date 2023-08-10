@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tt9_betweener_challenge/controllers/link_controller.dart';
 import 'package:tt9_betweener_challenge/controllers/user_controller.dart';
 import 'package:tt9_betweener_challenge/views/search_view.dart';
+import 'package:tt9_betweener_challenge/views/widgets/gradiantText.dart';
 
 import '../constants.dart';
 import '../models/link.dart';
@@ -64,12 +65,23 @@ class _HomeViewState extends State<HomeView> {
             //her instead use fun getLocalUser and each time we rebuild it will turned on again we keep the data and such as use then her
             builder: (context, snapshot) {
               if (snapshot.hasData) {
-                return Text(
+                return GradientText(
                   'Welcome ${snapshot.data?.user?.name}',
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
+                  style: const TextStyle(fontSize: 40),
+                  gradient: LinearGradient(colors: [
+                    Colors.purple.shade400,
+                    Colors.purple.shade900,
+                  ]),
                 );
               }
-              return Text('loading');
+              return GradientText(
+                'Loading',
+                style: const TextStyle(fontSize: 40),
+                gradient: LinearGradient(colors: [
+                  Colors.blue.shade400,
+                  Colors.blue.shade900,
+                ]),
+              );
             },
           ),
           Container(

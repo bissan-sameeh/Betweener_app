@@ -2,9 +2,14 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tt9_betweener_challenge/models/founded_users.dart';
+import 'package:tt9_betweener_challenge/views/widgets/my_container.dart';
 import 'package:tt9_betweener_challenge/views/widgets/my_text_field.dart';
-
+import '../Helpers/snak_bar.dart';
+import '../controllers/add_follow.dart';
+import '../controllers/follower_controller.dart';
 import '../controllers/search_controller.dart';
+import '../models/followes.dart';
+import 'friend_profile.dart';
 
 class SearchView extends StatefulWidget {
   const SearchView({Key? key}) : super(key: key);
@@ -13,21 +18,26 @@ class SearchView extends StatefulWidget {
   State<SearchView> createState() => _SearchViewState();
 }
 
-class _SearchViewState extends State<SearchView> {
+class _SearchViewState extends State<SearchView> with ShowSnackBar {
   TextEditingController searchController = TextEditingController();
-
   List<FoundedUsers>? foundedUsers = [];
-  search() {
+  late Future<Followers> followers;
+
+  search({required String query}) {
     final body = {
-      "name": searchController.text,
+      "name": query,
     };
-    searchUsers(body: body).then((value) => foundedUsers = value);
+    searchUsers(body: body).then((value) {
+      foundedUsers = value as List<FoundedUsers>?;
+      setState(() {});
+    });
   }
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    followers = viewFollower();
   }
 
   @override
@@ -46,23 +56,68 @@ class _SearchViewState extends State<SearchView> {
         child: Column(children: [
           MyTextField(
             controller: searchController,
-            hint: 'search to find pesrons',
+            hint: 'search to find persons',
             suffix: Icons.search_outlined,
-            onPressed: search,
+            onChanged: (val) {
+              search(query: val);
+            },
             prefix: null,
+          ),
+          SizedBox(
+            height: 16.h,
           ),
           Expanded(
             child: ListView.separated(
                 itemBuilder: (context, index) {
                   return Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(foundedUsers![index].name! ?? "anythings"),
+                      InkWell(
+                        onTap: () {
+                          // Navigator.pushNamed(context, FriendProfile.id,
+                          //     arguments: [followers]);
+                        },
+                        child: Text(
+                          foundedUsers![index].name!,
+                          style: const TextStyle(
+                              fontSize: 16, fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                      FutureBuilder(
+                        future: followers,
+                        builder: (BuildContext context,
+                            AsyncSnapshot<dynamic> snapshot) {
+                          if (snapshot.hasData) {
+                            return InkWell(
+                                onTap: () {
+                                  final body = {
+                                    'followee_id':
+                                        "${snapshot.data!.followers![index].id}"
+                                  };
+                                  addFollow(body: body).then((checkAddFriend) {
+                                    if (checkAddFriend == true && mounted) {
+                                      showSnackBar(context,
+                                          text: "Successes Process");
+                                    }
+                                  }).catchError((err) {
+                                    //       print(err);
+                                    showSnackBar(context,
+                                        text: "You are Following these person",
+                                        isError: true);
+                                  });
+                                },
+                                child: const My_Container(text: "Add Follow"));
+                          } else {
+                            return const CircularProgressIndicator();
+                          }
+                        },
+                      ),
                     ],
                   );
                 },
                 separatorBuilder: (context, index) {
                   return SizedBox(
-                    height: 16.h,
+                    height: 24.h,
                   );
                 },
                 itemCount: foundedUsers!.length),

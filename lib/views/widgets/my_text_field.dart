@@ -11,7 +11,7 @@ class MyTextField extends StatefulWidget {
   final TextInputType textInputType;
   final TextInputAction textInputAction;
   final bool allowLatters;
-  final Function? onPressed;
+  final Function(String)? onChanged;
   const MyTextField(
       {Key? key,
       required this.controller,
@@ -21,7 +21,7 @@ class MyTextField extends StatefulWidget {
       this.textInputType = TextInputType.text,
       this.textInputAction = TextInputAction.next,
       this.allowLatters = true,
-      this.onPressed,
+      this.onChanged,
       required this.suffix})
       : super(key: key);
 
@@ -79,9 +79,7 @@ class _MyTextFieldState extends State<MyTextField> {
       // obscureText: true,
       cursorColor: Colors.blue,
       cursorHeight: 30,
-      onSubmitted: (_) {
-        widget.onPressed;
-      },
+      onChanged: widget.onChanged,
 
       style: const TextStyle(color: Colors.blue),
     );
