@@ -40,7 +40,7 @@ class _FriendProfileState extends State<FriendProfile> with ShowSnackBar {
     final args = ModalRoute.of(context)!.settings.arguments as Follow;
     followers = args;
 
-    print('*******************************${args.linkSec?.length}');
+    // print('*******************************${args.linkSec?.length}');
     return Scaffold(
       body: SafeArea(
         child: Padding(
@@ -151,33 +151,32 @@ class _FriendProfileState extends State<FriendProfile> with ShowSnackBar {
 
                 Expanded(
                   child: ListView.builder(
-                      itemCount: followers.linkSec?.length,
+                      // itemCount: followers.linkSec?.length,
                       itemBuilder: (context, index) {
-                        return Container(
-                          width: double.infinity,
-                          margin: const EdgeInsets.only(bottom: 24),
-                          padding: const EdgeInsets.all(12),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(8),
-                            color: index % 2 == 0
-                                ? const Color(0xffFEE2E7)
-                                : const Color(0xffE7E5F1),
+                    return Container(
+                      width: double.infinity,
+                      margin: const EdgeInsets.only(bottom: 24),
+                      padding: const EdgeInsets.all(12),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(8),
+                        color: index % 2 == 0
+                            ? const Color(0xffFEE2E7)
+                            : const Color(0xffE7E5F1),
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            followers.SecLink![index].title ?? "snapshot",
+                            style: const TextStyle(letterSpacing: 3),
                           ),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                followers.linkSec![index].title ?? "snapshot",
-                                style: const TextStyle(letterSpacing: 3),
-                              ),
-                              Text(
-                                followers.linkSec![index].link ??
-                                    "hello@gmail.com",
-                              ),
-                            ],
+                          Text(
+                            followers.SecLink![index].link ?? "hello@gmail.com",
                           ),
-                        );
-                      }),
+                        ],
+                      ),
+                    );
+                  }),
                 )
               ]),
         ),

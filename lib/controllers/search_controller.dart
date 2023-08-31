@@ -10,7 +10,7 @@ Future<Object> searchUsers({required Map<String, dynamic> body}) async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
   User user = userFromJson(prefs.getString('user')!);
   final response = await http.post(
-      Uri.parse("http://www.osamapro.online/api/search"),
+      Uri.parse("https://betweener.gsgtt.tech/api/search"),
       body: body,
       headers: {"Authorization": "Bearer ${user.token}"});
 //[{id:44,name:ahmed,age:44},{},{}]

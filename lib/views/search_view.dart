@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -9,7 +11,6 @@ import '../controllers/add_follow.dart';
 import '../controllers/follower_controller.dart';
 import '../controllers/search_controller.dart';
 import '../models/followes.dart';
-import 'friend_profile.dart';
 
 class SearchView extends StatefulWidget {
   const SearchView({Key? key}) : super(key: key);
@@ -22,7 +23,7 @@ class _SearchViewState extends State<SearchView> with ShowSnackBar {
   TextEditingController searchController = TextEditingController();
   List<FoundedUsers>? foundedUsers = [];
   late Future<Followers> followers;
-
+  Timer? _timer;
   search({required String query}) {
     final body = {
       "name": query,
@@ -59,7 +60,10 @@ class _SearchViewState extends State<SearchView> with ShowSnackBar {
             hint: 'search to find persons',
             suffix: Icons.search_outlined,
             onChanged: (val) {
-              search(query: val);
+              if (_timer?.isActive ?? false) _timer!.cancel();
+              _timer = Timer(Duration(milliseconds: 500), () {
+                search(query: val);
+              });
             },
             prefix: null,
           ),

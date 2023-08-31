@@ -9,13 +9,13 @@ Link linkFromJson(String str) => Link.fromJson(json.decode(str));
 String linkToJson(Link data) => json.encode(data.toJson());
 
 class UserSec {
-  int? id;
+  dynamic? id;
   String? name;
   String? email;
   dynamic emailVerifiedAt;
-  String? createdAt;
-  String? updatedAt;
-  int? isActive;
+  dynamic? createdAt;
+  dynamic? updatedAt;
+  dynamic? isActive;
   dynamic country;
   dynamic ip;
   dynamic long;
@@ -73,12 +73,12 @@ class UserSec {
 }
 
 class Link {
-  int? id;
+  dynamic? id;
   String? title;
   String? link;
   String? username;
-  int? isActive;
-  int? userId;
+  String? isActive;
+  dynamic? userId;
   String? createdAt;
   String? updatedAt;
   UserSec? userSec;

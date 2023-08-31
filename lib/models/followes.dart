@@ -3,6 +3,7 @@
 //     final followers = followersFromJson(jsonString);
 
 import 'dart:convert';
+import 'package:tt9_betweener_challenge/models/link.dart';
 
 Followers followersFromJson(String str) => Followers.fromJson(json.decode(str));
 
@@ -53,12 +54,12 @@ class Follow {
   dynamic emailVerifiedAt;
   String? createdAt;
   String? updatedAt;
-  int? isActive;
+  String? isActive;
   dynamic country;
   dynamic ip;
-  double? long;
-  double? lat;
-  List<LinkSec>? linkSec;
+  String? long;
+  String? lat;
+  List<Link>? SecLink;
 
   Follow({
     this.id,
@@ -72,7 +73,7 @@ class Follow {
     this.ip,
     this.long,
     this.lat,
-    this.linkSec,
+    this.SecLink,
   });
 
   factory Follow.fromJson(Map<String, dynamic> json) => Follow(
@@ -85,12 +86,8 @@ class Follow {
         isActive: json["isActive"],
         country: json["country"],
         ip: json["ip"],
-        long: json["long"]?.toDouble(),
-        lat: json["lat"]?.toDouble(),
-        linkSec: json["links"] == null
-            ? []
-            : List<LinkSec>.from(
-                json["links"]!.map((x) => LinkSec.fromJson(x))),
+        long: json["long"],
+        lat: json["lat"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -105,52 +102,5 @@ class Follow {
         "ip": ip,
         "long": long,
         "lat": lat,
-        "links": linkSec == null
-            ? []
-            : List<dynamic>.from(linkSec!.map((x) => x.toJson())),
-      };
-}
-
-class LinkSec {
-  int? id;
-  String? title;
-  String? link;
-  String? username;
-  int? isActive;
-  int? userId;
-  String? createdAt;
-  String? updatedAt;
-
-  LinkSec({
-    this.id,
-    this.title,
-    this.link,
-    this.username,
-    this.isActive,
-    this.userId,
-    this.createdAt,
-    this.updatedAt,
-  });
-
-  factory LinkSec.fromJson(Map<String, dynamic> json) => LinkSec(
-        id: json["id"],
-        title: json["title"],
-        link: json["link"],
-        username: json["username"],
-        isActive: json["isActive"],
-        userId: json["user_id"],
-        createdAt: json["created_at"],
-        updatedAt: json["updated_at"],
-      );
-
-  Map<String, dynamic> toJson() => {
-        "id": id,
-        "title": title,
-        "link": link,
-        "username": username,
-        "isActive": isActive,
-        "user_id": userId,
-        "created_at": createdAt,
-        "updated_at": updatedAt,
       };
 }

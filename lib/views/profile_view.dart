@@ -34,6 +34,7 @@ class _ProfileViewState extends State<ProfileView> {
   void initState() {
     links = getLinks(context);
     user = getLocalUser();
+
     follower = viewFollower();
 
     super.initState();
@@ -42,7 +43,7 @@ class _ProfileViewState extends State<ProfileView> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(12.0),
+      padding: const EdgeInsets.all(8.0),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -129,9 +130,10 @@ class _ProfileViewState extends State<ProfileView> {
                                     future: follower,
                                     builder: (context, snapshot) {
                                       if (snapshot.hasData) {
+                                        print("sssssssssssssssssssss");
                                         return My_Container(
                                             text:
-                                                "Followers ${snapshot.data!.followersCount}",
+                                                "Followers ${snapshot.data?.followingCount}",
                                             function: () {
                                               Navigator.pushNamed(
                                                   context, FollowersView.id,
@@ -174,7 +176,7 @@ class _ProfileViewState extends State<ProfileView> {
                           ),
                         ]));
               } else {
-                return CircularProgressIndicator();
+                return const CircularProgressIndicator();
               }
             },
           ),
@@ -197,7 +199,7 @@ class _ProfileViewState extends State<ProfileView> {
                     itemCount: snapshot.data?.length,
                     itemBuilder: (context, index) {
                       return Container(
-                        padding:const EdgeInsets.symmetric(vertical: 8.0),
+                        // padding: const EdgeInsets.symmetric(vertical: 4.0),
                         // margin: EdgeInsets.symmetric(vertical: 8.0),
                         child: Padding(
                           padding: const EdgeInsets.all(8.0),
@@ -268,9 +270,9 @@ class _ProfileViewState extends State<ProfileView> {
                                     snapshot.data![index].title!,
                                     style: const TextStyle(letterSpacing: 3),
                                   ),
-                                  Text(snapshot.data![index].link!,
+                                  Text(
+                                    snapshot.data![index].link!,
                                     style: const TextStyle(letterSpacing: 3),
-
                                   ),
                                 ],
                               ),
@@ -307,7 +309,7 @@ class _ProfileViewState extends State<ProfileView> {
             ],
           ),
           SizedBox(
-            height: 100.h,
+            height: 80.h,
           )
         ],
       ),

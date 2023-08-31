@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tt9_betweener_challenge/controllers/link_controller.dart';
 import 'package:tt9_betweener_challenge/controllers/user_controller.dart';
+import 'package:tt9_betweener_challenge/views/add_link_view.dart';
 import 'package:tt9_betweener_challenge/views/search_view.dart';
 import 'package:tt9_betweener_challenge/views/widgets/gradiantText.dart';
 
@@ -19,9 +20,16 @@ class HomeView extends StatefulWidget {
 }
 
 class _HomeViewState extends State<HomeView> {
-  late Future<User>
+  Future<User>?
       user; //late because we not decompose the data yet ! and the same type of data returned of getLocalUser func.
   late Future<List<Link>> links;
+  int count = 0;
+
+  bool countLinks(Link links) {
+    count++;
+
+    return count == links.link?.length;
+  }
 
   @override
   void initState() {
@@ -63,6 +71,7 @@ class _HomeViewState extends State<HomeView> {
           FutureBuilder(
             future: user,
             //her instead use fun getLocalUser and each time we rebuild it will turned on again we keep the data and such as use then her
+
             builder: (context, snapshot) {
               if (snapshot.hasData) {
                 return GradientText(
@@ -74,13 +83,15 @@ class _HomeViewState extends State<HomeView> {
                   ]),
                 );
               }
-              return GradientText(
-                'Loading',
-                style: const TextStyle(fontSize: 40),
-                gradient: LinearGradient(colors: [
-                  Colors.blue.shade400,
-                  Colors.blue.shade900,
-                ]),
+              return Center(
+                child: GradientText(
+                  'Loading',
+                  style: const TextStyle(fontSize: 40),
+                  gradient: LinearGradient(colors: [
+                    Colors.blue.shade400,
+                    Colors.blue.shade900,
+                  ]),
+                ),
               );
             },
           ),
@@ -116,49 +127,91 @@ class _HomeViewState extends State<HomeView> {
                   height: 100.h,
                   child: ListView.separated(
                       shrinkWrap: true,
-                      padding: EdgeInsets.all(12),
+                      padding: const EdgeInsets.all(12),
                       scrollDirection: Axis.horizontal,
                       itemBuilder: (context, index) {
-                        final title = snapshot.data?[index].title;
-                        final link = snapshot.data?[index].link;
-                        return Container(
-                          padding: EdgeInsets.all(12),
-                          decoration: BoxDecoration(
-                              color: kLinksColor,
-                              borderRadius: BorderRadius.circular(15)),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                '$title',
-                                style: const TextStyle(
-                                    color: Colors.white, letterSpacing: 3),
-                              ),
-                              SizedBox(
-                                height: 8.h,
-                              ),
-                              Text(
-                                '$link',
-                                style: TextStyle(color: Colors.white),
-                              ),
-                            ],
-                          ),
-                        );
+                        print(index);
+                        // if (index == snapshot.data!.length) {
+                        if (index == snapshot.data!.length) {
+                          return Container(
+                              padding: const EdgeInsets.all(12),
+                              decoration: BoxDecoration(
+                                  color: kSecondaryColor,
+                                  borderRadius: BorderRadius.circular(15)),
+                              child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    InkWell(
+                                      onTap: () {
+                                        Navigator.pushNamed(
+                                                context, AddLinkView.id)
+                                            .then((value) {
+                                          setState(() {
+                                            links = getLinks(context);
+                                          });
+                                        });
+                                      },
+                                      child: const Icon(
+                                        Icons.add,
+                                        color: Colors.white,
+                                        size: 30,
+                                      ),
+                                    ),
+                                    const Text(
+                                      'Add Link',
+                                      style: TextStyle(color: Colors.white),
+                                    ),
+                                  ]));
+                        }
+                        if (index < snapshot.data!.length) {
+                          return Container(
+                            padding: const EdgeInsets.all(12),
+                            decoration: BoxDecoration(
+                                color: kLinksColor,
+                                borderRadius: BorderRadius.circular(15)),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  '${snapshot.data![index].title}',
+                                  style: const TextStyle(
+                                      color: Colors.white, letterSpacing: 3),
+                                ),
+                                SizedBox(
+                                  height: 8.h,
+                                ),
+                                Text(
+                                  '${snapshot.data![index].link}',
+                                  style: const TextStyle(color: Colors.white),
+                                ),
+                              ],
+                            ),
+                          );
+                        }
                       },
+                      // },
+                      // },
                       separatorBuilder: (context, index) {
                         return SizedBox(
                           width: 12.w,
                         );
                       },
-                      itemCount: snapshot.data!.length),
+                      itemCount: snapshot.data!.length + 1),
                 );
               }
               if (snapshot.hasError) {
                 return Text(snapshot.error.toString());
               }
-              return Text('loading');
+              return const Center(
+                child: CircularProgressIndicator(
+                  color: kPrimaryColor,
+                ),
+              );
             },
           ),
+          SizedBox(
+            height: 20,
+          )
         ],
       ),
     );

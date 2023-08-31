@@ -13,12 +13,10 @@ Future<Followers> viewFollower() async {
   User user = userFromJson(prefs.getString('user')!);
   final response = await http.get(Uri.parse(followUrl),
       headers: {HttpHeaders.authorizationHeader: 'Bearer ${user.token}'});
+  print("jjj ${response.statusCode}");
 
   if (response.statusCode == 200) {
-    // final data = jsonDecode(response.body)['followers'] as List<dynamic>;
-    //
-    // return data.map((e) => Follower.fromJson(e)).toList();
-    print((response.body));
+    print("jjj ${response.statusCode}");
     return followersFromJson(response.body);
   } else {
     return Future.error("There is an error in get Followers");

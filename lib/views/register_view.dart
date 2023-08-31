@@ -1,10 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tt9_betweener_challenge/assets.dart';
+import 'package:tt9_betweener_challenge/views/home_view.dart';
 import 'package:tt9_betweener_challenge/views/widgets/custom_text_form_field.dart';
 import 'package:tt9_betweener_challenge/views/widgets/secondary_button_widget.dart';
 
 import '../../views/widgets/google_button_widget.dart';
+import '../Helpers/snak_bar.dart';
+import '../controllers/register_controller.dart';
+import '../models/user.dart';
+import 'loading_view.dart';
 
 class RegisterView extends StatefulWidget {
   static String id = '/registerView';
@@ -15,7 +21,7 @@ class RegisterView extends StatefulWidget {
   State<RegisterView> createState() => _RegisterViewState();
 }
 
-class _RegisterViewState extends State<RegisterView> {
+class _RegisterViewState extends State<RegisterView> with ShowSnackBar {
   TextEditingController nameController = TextEditingController();
 
   TextEditingController emailController = TextEditingController();
@@ -23,6 +29,11 @@ class _RegisterViewState extends State<RegisterView> {
   TextEditingController passwordController = TextEditingController();
 
   final _formKey = GlobalKey<FormState>();
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -86,7 +97,7 @@ class _RegisterViewState extends State<RegisterView> {
                   ),
                   SecondaryButtonWidget(
                       onTap: () {
-                        if (_formKey.currentState!.validate()) {}
+                        _performRegister();
                       },
                       text: 'REGISTER'),
                   const SizedBox(
@@ -111,5 +122,62 @@ class _RegisterViewState extends State<RegisterView> {
         ),
       ),
     );
+  }
+
+  _performRegister() {
+    if (_validateData()) {
+      _Register();
+    }
+  }
+
+  bool _validateData() {
+    if (nameController.text.isEmpty) {
+      showSnackBar(context, text: 'Please, Enter the text', isError: true);
+      return false;
+    } else if (emailController.text.isEmpty) {
+      showSnackBar(context,
+          isError: true, text: "Input Your Email Address please!");
+      return false;
+    } else if (!RegExp(
+            r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+        .hasMatch(emailController.text)) {
+      showSnackBar(context,
+          isError: true, text: "Input availed Email Address please!");
+      return false;
+    } else if (passwordController.text.isEmpty) {
+      showSnackBar(context, text: "Input Your Password please!", isError: true);
+
+      return false;
+    } else if (!RegExp("(?=.*?[0-9])(?=.*?[A-Za-z])(?=.*[^0-9A-Za-z]).+")
+        .hasMatch(passwordController.text)) {
+      showSnackBar(context,
+          text:
+              "Password must contain at least one character (a-z)/(A-Z) or digit!",
+          isError: true);
+      return false;
+    }
+    return true;
+  }
+
+  _Register() {
+    ///
+
+    final body = {
+      "name": nameController.text,
+      "email": emailController.text,
+      "password_confirmation": passwordController.text,
+      "password": passwordController.text
+    };
+    register(body: body).then((value) async {
+      print("ooooo");
+      showSnackBar(context, text: "Registered successfully");
+      final SharedPreferences prefs = await SharedPreferences.getInstance();
+      await prefs.setString('user', userToJson(value));
+      if (mounted) {
+        Navigator.pushNamed(context, LoadingView.id);
+      }
+    }).catchError((err) {
+      showSnackBar(context, text: "registered account", isError: true);
+    });
   }
 }

@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:io';
 
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
@@ -11,11 +10,12 @@ Future<bool?> addFollow({required Map<String, dynamic> body}) async {
   final SharedPreferences prefs = await SharedPreferences.getInstance();
   User user = userFromJson(prefs.getString('user')!);
   final response = await http.post(
-      Uri.parse("http://www.osamapro.online/api/follow"),
+      Uri.parse("https://betweener.gsgtt.tech/api/follow"),
       body: body,
       headers: {'Authorization': 'Bearer ${user.token}'});
-  print(" rrrr ${response.statusCode}");
   if (response.statusCode == 200) {
+    print(" rrrr ${response.statusCode}");
+
     return true;
   }
   if (response.statusCode == 500) {

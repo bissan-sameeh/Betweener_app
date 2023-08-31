@@ -7,7 +7,7 @@ mixin ShowSnackBar {
       content: Text(text),
       backgroundColor: isError == false ? Colors.green : Colors.red,
       behavior: SnackBarBehavior.floating,
-      duration: const Duration(seconds: 2),
+      duration: const Duration(milliseconds: 800),
       margin: const EdgeInsets.all(12),
     ));
   }
