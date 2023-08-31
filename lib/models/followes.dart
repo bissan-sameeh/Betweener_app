@@ -3,7 +3,6 @@
 //     final followers = followersFromJson(jsonString);
 
 import 'dart:convert';
-import 'package:tt9_betweener_challenge/models/link.dart';
 
 Followers followersFromJson(String str) => Followers.fromJson(json.decode(str));
 
@@ -59,7 +58,7 @@ class Follow {
   dynamic ip;
   String? long;
   String? lat;
-  List<Link>? SecLink;
+  List<LinkSes>? links;
 
   Follow({
     this.id,
@@ -73,7 +72,7 @@ class Follow {
     this.ip,
     this.long,
     this.lat,
-    this.SecLink,
+    this.links,
   });
 
   factory Follow.fromJson(Map<String, dynamic> json) => Follow(
@@ -88,6 +87,10 @@ class Follow {
         ip: json["ip"],
         long: json["long"],
         lat: json["lat"],
+        links: json["links"] == null
+            ? []
+            : List<LinkSes>.from(
+                json["links"]!.map((x) => LinkSes.fromJson(x))),
       );
 
   Map<String, dynamic> toJson() => {
@@ -102,5 +105,52 @@ class Follow {
         "ip": ip,
         "long": long,
         "lat": lat,
+        "links": links == null
+            ? []
+            : List<dynamic>.from(links!.map((x) => x.toJson())),
+      };
+}
+
+class LinkSes {
+  int? id;
+  String? title;
+  String? link;
+  String? username;
+  String? isActive;
+  String? userId;
+  String? createdAt;
+  String? updatedAt;
+
+  LinkSes({
+    this.id,
+    this.title,
+    this.link,
+    this.username,
+    this.isActive,
+    this.userId,
+    this.createdAt,
+    this.updatedAt,
+  });
+
+  factory LinkSes.fromJson(Map<String, dynamic> json) => LinkSes(
+        id: json["id"],
+        title: json["title"],
+        link: json["link"],
+        username: json["username"],
+        isActive: json["isActive"],
+        userId: json["user_id"],
+        createdAt: json["created_at"],
+        updatedAt: json["updated_at"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "id": id,
+        "title": title,
+        "link": link,
+        "username": username,
+        "isActive": isActive,
+        "user_id": userId,
+        "created_at": createdAt,
+        "updated_at": updatedAt,
       };
 }

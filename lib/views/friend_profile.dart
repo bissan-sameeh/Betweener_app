@@ -151,32 +151,33 @@ class _FriendProfileState extends State<FriendProfile> with ShowSnackBar {
 
                 Expanded(
                   child: ListView.builder(
-                      // itemCount: followers.linkSec?.length,
+                      itemCount: followers.links?.length,
                       itemBuilder: (context, index) {
-                    return Container(
-                      width: double.infinity,
-                      margin: const EdgeInsets.only(bottom: 24),
-                      padding: const EdgeInsets.all(12),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(8),
-                        color: index % 2 == 0
-                            ? const Color(0xffFEE2E7)
-                            : const Color(0xffE7E5F1),
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            followers.SecLink![index].title ?? "snapshot",
-                            style: const TextStyle(letterSpacing: 3),
+                        return Container(
+                          width: double.infinity,
+                          margin: const EdgeInsets.only(bottom: 24),
+                          padding: const EdgeInsets.all(12),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(8),
+                            color: index % 2 == 0
+                                ? const Color(0xffFEE2E7)
+                                : const Color(0xffE7E5F1),
                           ),
-                          Text(
-                            followers.SecLink![index].link ?? "hello@gmail.com",
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                followers.links![index].title ?? "snapshot",
+                                style: const TextStyle(letterSpacing: 3),
+                              ),
+                              Text(
+                                followers.links![index].link ??
+                                    "hello@gmail.com",
+                              ),
+                            ],
                           ),
-                        ],
-                      ),
-                    );
-                  }),
+                        );
+                      }),
                 )
               ]),
         ),
