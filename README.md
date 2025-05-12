@@ -41,7 +41,7 @@ Implemented using **MVC Atchet** pattern for clean separation of concerns and sc
 
 - **Flutter** – Cross-platform mobile framework
 - **MVC Atchet** – For structured and maintainable code
-- **Firebase** – Authentication and database (if used)
+- **API** – Authentication and sharedPreferences (if used)
 - **Geolocation** – For detecting nearby users
 - **QR Scanner** – For following users by scanning QR codes
 
