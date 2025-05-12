@@ -33,7 +33,7 @@ Implemented using **MVC Atchet** pattern for clean separation of concerns and sc
 
 ## 📸 Mockups
 
-![App Mockup](mockup.png) <!-- Replace this with your actual mockup file -->
+![App Mockup](betweener_app.jfif) <!-- Replace this with your actual mockup file -->
 
 ---
 
@@ -56,7 +56,7 @@ This project was part of my internship at **GSG**, where I enhanced my Flutter s
 ## 📎 LinkedIn Post
 
 🔗 [Check out my LinkedIn post](https://www.linkedin.com/feed/update/urn:li:activity:7327654528042860546/)
-_(Replace the link above with your actual LinkedIn post if available.)_
+
 
 ---
 
